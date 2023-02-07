@@ -49,14 +49,29 @@ def replace_double_cons(string):
     return result
 
 
+def replace_chars_in_string(string, index, number_of_chars, replacement):
+    return string[:index] + replacement + string[index + number_of_chars:]
+
+
+def fiveCharSpecialCase(word):
+    return len(word) == 5 and word.endswith("en")
+
+
 def matPrefix(string):
-    newString= string
+    newString = string
     if string.startswith("ver") and len(string) > 3 and string[3] != "r":
-        newString= replace_char(string, "ver", "141")
-    if string.startswith("be") and len(string) > 2 and string[2] != "e":
-        newString= replace_char(string, "be", "14")
-    if string.startswith("ge") and len(string) > 2 and string[2] != "e":
-        newString= replace_char(string, "ge", "14")
+        newString = replace_chars_in_string(string, 0, 3, "141")
+    if string.startswith("be") and len(string) > 2 and string[2] != "e" and not fiveCharSpecialCase(string):
+        newString = replace_chars_in_string(string, 0, 2, "14")
+    if string.startswith("ge") and len(string) > 2 and string[2] != "e" and not fiveCharSpecialCase(string):
+        newString = replace_chars_in_string(string, 0, 2, "14")
+    return newString
+
+
+def matSuffix(string):
+    newString = string
+    if string.endswith("en") and (len(string)-3) != "e":
+        newString = replace_chars_in_string(string, len(string)-2, 2, "41")
     return newString
 
 
@@ -71,10 +86,13 @@ def translate_to_numbers(word):
     word = replace_char(word, "ig", "41")
     word = replace_char(word, "ing", "411")
     word = replace_char(word, "lijk", "141")
-    word = matPrefix(word)
+
     # Two
     for tone_2 in Two:
         word = replace_char(word, tone_2, "2")
+    # Mat vowels continued
+    word = matPrefix(word)
+    word = matSuffix(word)
     # Short and long vowels
     for vowel in Vowels:
         word = replace_char(word, vowel, "6")
