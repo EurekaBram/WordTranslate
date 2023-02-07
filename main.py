@@ -59,7 +59,7 @@ def fiveCharSpecialCase(word):
 
 def matPrefix(string):
     newString = string
-    if string.startswith("ver") and len(string) > 3 and string[3] != "r":
+    if string.startswith("ver") and len(string) > 3:
         newString = replace_chars_in_string(string, 0, 3, "141")
     if string.startswith("be") and len(string) > 2 and string[2] != "e" and not fiveCharSpecialCase(string):
         newString = replace_chars_in_string(string, 0, 2, "14")
